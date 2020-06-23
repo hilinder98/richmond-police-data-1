@@ -30,7 +30,7 @@ ranklarceny18table <- sort(larceny18table, decreasing = TRUE)
 
 ## finding the proportion of larceny incidents by subcategory
 
-prop.table(ranklarceny18table) 
+prop.table(ranklarsceny18table) 
 
 round(prop.table(ranklarceny18table), 4)
 
@@ -40,4 +40,36 @@ status18table <- table(larceny18['Resolution'])
 
 ## finding the proportion of larceny cases that have been closed
 
+
 prop.table(status18table)
+
+## bar plots for the incident types, larceny subcategories and the status of larceny cases 
+
+barplot(rankincidenttable, las = 2, cex.names = .5, ylim =c(0, 10000), main = "Breakdown of police incidents in the Richmond by incident type")
+
+ggplot()
+
+barplot(ranklarceny18table, las = 2, cex.names = 1, ylim =c(0, 10000), main = "Breakdown of larceny incidents by subcategory")
+
+barplot(status18table, las = 2, cex.names = 1,ylim =c(0, 10000), main = "Breakdown of Larceny case statuses")
+
+## changes over time
+
+changesincidenttype <- table(richmond18$`Incident Category`,richmond18$`Incident Year`)
+
+rankchangesincidenttype <- changesincidenttype[order(-rowSums(changesincidenttype)),]
+
+changeslarcerny18table <-  table(larceny18$`Incident Subcategory`,larceny18$`Incident Year`)
+
+rankchangeslarcerny18table <- changeslarcerny18table[order(-rowSums(changeslarcerny18table)),]
+
+changesstatus18table <- table(larceny18$`Resolution`,larceny18$`Incident Year`)
+
+rankchangesstatus18table <-  changesstatus18table[order(-rowSums(changesstatus18table)),]
+
+## finding the proportion of cases that take place in the richmond
+## 
+districtincidentcompar <- table( data18$`Incident Category`, data18$`Police District`)
+
+districtincidentcompar[order(-rowSums(districtincidentcompar)),]
+
