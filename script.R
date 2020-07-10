@@ -1,6 +1,10 @@
 ##test
 ##
 ##
+library(readr)
+Police_Department_Incident_Reports_2018_to_Present <- read_csv("~/Desktop/richmond police data/police data 2/richmond-police-data-1/Police_Department_Incident_Reports__2018_to_Present.csv")
+View(Police_Department_Incident_Reports_2018_to_Present)
+
 data18 <- Police_Department_Incident_Reports_2018_to_Present
 View(data18)
 table(data18['Incident Category'])
@@ -67,9 +71,38 @@ changesstatus18table <- table(larceny18$`Resolution`,larceny18$`Incident Year`)
 
 rankchangesstatus18table <-  changesstatus18table[order(-rowSums(changesstatus18table)),]
 
-## finding the proportion of cases that take place in the richmond
-## 
-districtincidentcompar <- table( data18$`Incident Category`, data18$`Police District`)
+## finding the proportion of cases by incident category that took place in the richmond
 
-districtincidentcompar[order(-rowSums(districtincidentcompar)),]
+## lets find the proportion of petty larceny incidents in the richmond as a proportion of the total incidents in the city
+
+nrow(data18[which(data18$`Police District`=="Richmond" & 
+                      data18$`Incident Category`== "Larceny Theft" 
+                  & data18$`Incident Year` == '2018'),])/
+nrow(data18[which( data18$`Incident Category`== "Larceny Theft" &
+                       data18$`Incident Year` == '2018'),])
+
+## creating a function that creates a list of
+
+propcategorydistrictyear <- function(district = "Richmond", year = 2018, category = "Larceny Theft"){
+outcome <-    nrow(data18[which(data18$`Police District`== district & 
+                                data18$`Incident Category`== category & 
+                                data18$`Incident Year` == year),])/
+              nrow(data18[which(data18$`Incident Category`== category &
+                                data18$`Incident Year` == year),]) 
+whatiwant <- c("in", year, category,"in the",district, "made up", outcome*100, "percent of san francisco's total")
+return (whatiwant)
+}
+
+richmond <- vector("list", 0)
+for(i in 1:3){
+    richmondlarceny[[i]] <- propcategorydistrictyear(year = i+2017)   
+    richmondlarceny
+}
+
+taravallarceny <- vector("list", 0)
+for(i in 1:3){
+    taravallarceny[[i]] <- propcategorydistrictyear(district = "Taraval", year = i+2017)   
+    taravallarceny
+}
+
 
